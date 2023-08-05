@@ -1,13 +1,32 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
+import { BrowserRouter } from 'react-router-dom';
 import App from './App';
+import {UserProvider} from './contexts/user.context';
+import { CategoriesProvider } from './contexts/categories.context';
+import { CartProvider } from './contexts/cart.context';
 import reportWebVitals from './reportWebVitals';
+import { OrderProvider } from './contexts/orders.context';
+import {stripePromise} from './utils/stripe/stripe.utils';
+import {Elements} from '@stripe/react-stripe-js';
+import './index.scss';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <UserProvider>
+        <CategoriesProvider>
+          <OrderProvider>
+          <CartProvider>
+            <Elements stripe={stripePromise}>
+            <App />
+            </Elements>
+          </CartProvider>
+          </OrderProvider>
+        </CategoriesProvider>
+      </UserProvider>
+    </BrowserRouter>
   </React.StrictMode>
 );
 
